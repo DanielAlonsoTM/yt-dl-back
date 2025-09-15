@@ -4,12 +4,15 @@ from flask_cors import CORS
 from yt_dlp import YoutubeDL
 
 app = Flask(__name__)
-CORS(app, resources={r"/*":{"origin":"http://localhost:3000"}})
+CORS(app,
+     origins=["*", "http://localhost:3000"],
+     methods=["GET", "POST", "OPTIONS"],
+     allow_headers=["Content-Type"])
 
 @app.route('/ping', methods=['GET'])
 def get_tasks():
     app.logger.info('Consulting for service enable')
-    return jsonify('pong')
+    return jsonify('Service enable, version: 1.0.1')
 
 @app.route('/download', methods=['POST'])
 def download_link():
@@ -100,4 +103,4 @@ def yt_download(urls: list):
     return response_ytdl
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
